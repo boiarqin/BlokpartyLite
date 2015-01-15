@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+		<h1>BLOKPARTY LITE</h1>
+		<h2>Blokus board game using HTML 5 and JS</h2>
+		<!--game board-->
+		<canvas id="gameBoard" width="1000" height="525">
+			This game requires HTML 5. Please update your browser.
+		</canvas>
+		<ul id="scoreboard">
+		<li><h3>Scoreboard</h3>
+		</li>
+		<li id="currentplayer">
+		</li>
+		<li id="pass"><input type="button" value="Resign Player" onclick="resignCurrentPlayer()"/><br/><br/>
+		</li>
+		<li id="redscore">
+		</li>
+		<li id="yellowscore">
+		</li>
+		<li id="greenscore">
+		</li>
+		<li id="bluescore">
+		</li>
+		</ul>
+		<h2>Gameplay</h2>
+		<ul>
+			<li>Order of play is based on color, with red going first, followed by yellow, green, and blue.</li>
+			<li>The first piece played of each color is placed in one of the board's four corners.</li>
+			<li>Each new piece played must be placed so that it touches at least one piece of the same color, with only corner-to-corner contact allowed&mdash;edges cannot touch. However, edge-to-edge contact is allowed when two pieces of different color are involved.</li>
+			<li>When a player cannot place a piece, he or she passes, and play continues as normal for the remaining players.</li>
+			<li>The game ends when no one can place a piece.</li>
+		</ul>
+		<h2>Scoring</h2>
+		<ul>
+		<li>A player gains one point for each square placed on the board (e.g. playing a pentomino is worth +5 points).</li>
+		<li>At the end of the game, unplayed pieces count against the player's score (e.g. an unplayed tetromino is worth -4 points).</li>
+		<li>If a player has played all of their pieces, they gain a bonus of +20 if the last piece played was the monomino. Otherwise the bonus is +15.</li>
+		<li>The maximum score possible for a player is 1x1 + 2x1 + 3x2 + 4x5 + 5x12 + 20 (all pieces on the board, with the monomino played last) for a total of 109 points.</li>
+		</ul>
+		<h2>Updates</h2>
+		<ul>
+		<li>2/18:
+			<ul>
+			<li>Fixed bug that created playable corners bordering same color.</li>
+			<li>Game over occurs when last player has played all of their pieces.</li>
+			<li>Fixed one piece rep error in 18.</li>
+			</ul>
+			</li>
+		<li>1/27:
+			<ul>
+			<li>Added images for flip/rotate.</li>
+			<li>Fixed switched flipHoriz and flipVert.</li>
+			<li>Fixed bugs in updating final scores.</li>
+			</ul>
+			</li>
+		<li>1/26:
+			<ul>
+			<li>Made "snap-to" of pieces more forgiving at edges of board.</li>
+			<li>Added functionality to resignCurrentPlayer and button</li>
+			<li>Max final score of 109 correct (89 squares + 20 final monomino bonus)</li>
+			</ul>
+			</li>
+		<li>1/22:
+			<ul>
+			<li>Made "snap-to" of pieces more forgiving.</li>
+			<li>Validates moves. Corner case needs fixing.</li>
+			</ul>
+			</li>
+		<li>1/7:
+			<ul>
+			<li>Updates move representations on the board; shows available corners for current color</li>
+			</ul>
+			</li>
+		<li>12/8:
+			<ul>
+			<li>Checks validity of user's moves</li>
+			<li>Shows playable corners for current color</li>
+			</ul>
+			</li>
+		<li>11/21:
+			<ul>
+			<li>Corrected "snap-to" using Math.floor instead of Math.round</li>
+			</ul>
+			</li>
+		<li>11/20:
+			<ul>
+			<li>"Snap-to" of draggable piece to grid or edit pane.</li>
+			<li>Removes a piece from the available lineup after it has been placed on board.
+			</li>
+			</ul>
+			</li>
+		<li>11/17:
+			<ul>
+			<li>Replace bottom-right coordinates of pieces with height and width</li>
+			<li>Implemented deep copy of selected pieces.
+			</li>
+			<li>Recognizes mouse down, mouse up, and mouse move. Current piece is draggable.
+			</li>
+			</ul>
+			</li>
+		<li>11/14:
+			<ul>
+			<li>Preparing for click/drag: Added variables for dragging, valid state, etc.
+			</li>
+			<li>Preparing for click/drag: Reorganized canvas drawing methods.
+			</li>
+			</ul>
+			</li>
+		<li>11/8:
+			<ul>
+			<li>Enabled rotateCW/flipHoriz/flipVert functionalities. The buttons aren't labeled, but they are in top-bottom order in the edit pane.
+			</li>
+			<li>To use: click on any RED piece. Click on any of the blank squares next to the piece's larger representation.
+			</li>
+			<li>Initialized and styled scoreboard.
+			</li>
+			</ul>
+			</li>
+		<li>11/7:
+			<ul>
+			<li>Checks piece container and piece boundaries to determine if mouse click in canvas is on a currently playable piece. Will see if something more like 'filter' can be used instead of a for-loop.
+			</li>
+			<li>Clicking on a piece of the current color causes it to display in the edit pane. Current color is manually set to red.
+			</li>
+			<li>Fixed a missing triomino. Whoops.
+			</li>
+			</ul>
+			</li>
+		<li>10/31:
+			<ul>
+			<li>Initializes and draws pieces in right pane. Not sure if nested closures are a good thing.</li>
+			<li>drawBoard function: re-draws board according to 2D array of colors</li>
+			</ul>
+			</li>
+		<li>10/30: Created canvas and board</li>
+		</ul>
+		<h2>TODO list</h2>
+		<ul>
+		<li><strike>Select pieces from the right pane</strike></li>
+		<li><strike>Create edit pane (for flips and rotations)</strike></li>
+		<li><strike>Display pieces in edit pane</strike></li>
+		<li><strike>Position and style the scoreboard (blank ul under the canvas)</strike>
+		</li>
+		<li><strike>Deep copy selected pieces</strike>
+		</li>
+		<li><strike>Replace bottom-right coordinates of pieces with height and width</strike>
+		</li>
+		<li><strike>Dragged pieces must either snap to board or back to edit pane</strike>
+		</li>
+		<li><strike>Click and drag pieces from edit pane to board</strike></li>
+		<li><strike>Make snap-to more forgiving</strike>
+		</li>
+		<li><strike>Draw actual images for rotate/flip buttons (button is functional, regardless)</strike>
+		</li>
+		<li><strike>Update scoreboard at end of game. Does not subtract unused points.</strike>
+		</li>
+		<li><strike>Check if a move is valid--error when placing a corner piece near an edge of same color</strike></li>
+		<li><strike>If a player has played all their pieces, remove from lineup.</strike>
+		</li>
+		<li><strike>Discovered new bug; unsure of origin. Check piece reps, move validation, piece playing procedure. Bug resulted from error in piece rep #18.</strike>
+		</li>
+		<li>Consolidate global vars
+		</li>
+		<li>Implement game-play rules</li>
+		<li>Double-check board and move representations in piece initialization.
+		</li>
+		
+		
+		</ul>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.2.min.js"><\/script>')</script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+    </body>
+</html>
